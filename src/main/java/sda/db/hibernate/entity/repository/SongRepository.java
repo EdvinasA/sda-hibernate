@@ -9,12 +9,7 @@ import java.util.UUID;
 public class SongRepository extends AbstractRepository<Song, UUID>{
 
     public SongRepository(EntityManager entityManager) {
-        super(entityManager);
-    }
-
-    @Override
-    public Song find(UUID uuid) {
-        return entityManager.find(Song.class, uuid);
+        super(entityManager, Song.class);
     }
 
     @Override
@@ -22,8 +17,4 @@ public class SongRepository extends AbstractRepository<Song, UUID>{
         return entityManager.createQuery("FROM Song", Song.class).getResultList();
     }
 
-    @Override
-    public void delete(Song entity) {
-
-    }
 }

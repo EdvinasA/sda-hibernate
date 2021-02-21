@@ -6,9 +6,16 @@ import javax.persistence.EntityTransaction;
 public abstract class AbstractRepository<T, ID> implements Repository<T, ID> {
 
     protected EntityManager entityManager;
+    private Class<?extends T> entityClass;
 
-    public AbstractRepository(EntityManager entityManager) {
+    public AbstractRepository(EntityManager entityManager, Class<?extends T> entityClass) {
         this.entityManager = entityManager;
+        this.entityClass = entityClass;
+    }
+
+    @Override
+    public T find(ID id) {
+        return entityManager.find(entityClass, id);
     }
 
     @Override
