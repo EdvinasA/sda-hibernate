@@ -3,9 +3,6 @@ package sda.db.hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import sda.db.hibernate.entity.*;
-import sda.db.hibernate.entity.repository.AgentRepository;
-import sda.db.hibernate.entity.repository.AuthorRepository;
-import sda.db.hibernate.entity.repository.SongRepository;
 import sda.db.hibernate.entity.util.AgentId;
 
 import javax.persistence.EntityManager;
@@ -25,10 +22,6 @@ public class Project {
                 .buildSessionFactory();
 
         EntityManager em = sessionFactory.createEntityManager();
-
-        SongRepository songRepository = new SongRepository(em);
-        AgentRepository agentRepository = new AgentRepository(em);
-        AuthorRepository authorRepository = new AuthorRepository(em);
 
         EntityTransaction t = em.getTransaction();
 
@@ -51,24 +44,21 @@ public class Project {
         author.setAgent(agent);
 
         em.persist(agent);
-        authorRepository.save(author);
+        em.persist(author);
         em.persist(albumA);
         em.persist(albumB);
 
         t.commit();
 
-        songRepository.findAll().forEach(System.out::println);
+        List<Song> songs = em.createQuery("FROM Song", Song.class).getResultList();
+        songs.forEach(System.out::println);
 
         List<Album> albums = em.createQuery("FROM Album", Album.class).getResultList();
         albums.forEach(System.out::println);
-
-        System.out.println(agentRepository.find("Vardenis", "Pavardenis"));
-        System.out.println(authorRepository.findAll());
     }
 
     private Album createAlbumA(Author author) {
         Song songA = new Song("song A", author, 123, Instant.now());
-        songA.setLyrics("some test lyrics");
 
         Song songB = new Song("song B", author, 123, Instant.now());
 
