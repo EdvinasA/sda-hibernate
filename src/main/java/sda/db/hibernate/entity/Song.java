@@ -36,6 +36,8 @@ public class Song {
     @Column(nullable = false)
     private Instant releaseDate;
 
+    private String lyrics;
+
     @ManyToMany
     private List<Album> albums = new ArrayList<>();
 
@@ -44,6 +46,14 @@ public class Song {
         this.author = author;
         this.duration = duration;
         this.releaseDate = releaseDate;
+    }
+
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
     }
 
     public UUID getId() {
@@ -106,6 +116,7 @@ public class Song {
                 ", author=" + author +
                 ", duration=" + getDurationString() +
                 ", releaseDate=" + FORMATTER.format(releaseDate) +
+                ", lyrics=" + lyrics +
                 ", album=" + albums.stream().map(Album::getName).collect(Collectors.toList()) +
                 '}';
     }
