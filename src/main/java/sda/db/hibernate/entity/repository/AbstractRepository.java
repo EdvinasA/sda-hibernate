@@ -24,4 +24,8 @@ public abstract class AbstractRepository<T, ID> implements Repository<T, ID> {
         }
     }
 
+    @Override
+    public void delete(T entity) {
+        entityManager.remove(entity);
+    }
 }
